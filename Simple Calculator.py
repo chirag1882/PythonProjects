@@ -2,38 +2,58 @@ class MathematicalOperators:
     def add(self, x, y):
         return x + y
 
-    def subtraction(self, x, y):
+    def subtract(self, x, y):
         return x - y
 
     def multiply(self, x, y):
         return x * y
 
     def divide(self, x, y):
-        return x/y
+        if y == 0:
+            raise ZeroDivisionError("Cannot divide by zero.....")
+        return x / y
+
+
+def get_number(prompt):
+    while True:
+        try:
+            return int(input(prompt))
+        except ValueError:
+            print('Invalid input! Please enter a number.')
 
 
 math = MathematicalOperators()
-number1 = int(input('Please type first number: '))
-number2 = int(input('Please type second number: '))
-operation_opted_by_user = str(input('''a - Addition
-s - Subtraction
-m - Multiplication
-d - Division
-Choose the operation you want to perform: ''')).lower()
-try:
-    if operation_opted_by_user == 'a':
-        print(f'your result: {math.add(number1, number2)}')
-    elif operation_opted_by_user == 's':
-        print(f'your result: {math.subtraction(number1, number2)}')
-    elif operation_opted_by_user == 'm':
-        print(f'your result: {math.multiply(number1, number2)}')
-    elif operation_opted_by_user == 'd':
-        print(f'your result: {math.divide(number1, number2)}')
-    else:
-        print(f'⚠️Please choose an operation mentioned above')
-except ZeroDivisionError:
-    print(f'ERROR: If you want to perform Division then your second number cannot be 0.')
 
-# actions to perform : integrate a while loop
-# counter the expected errors
-# add information about the result i.e.  it is an integer or a rational number etc.
+print('''Supported operations
+a - addition
+s - subtraction
+m - multiplication
+d - division
+q - quit''')
+
+number1 = get_number('Please type first number: ')
+number2 = get_number('Please type second number: ')
+
+while True:
+    operation_opted_by_user = input('Choose the operation you want to perform: ').lower()
+    if operation_opted_by_user == 'q':
+        print("Goodbye!")
+        break
+    try:
+        if operation_opted_by_user == 'a':
+            print(f'Your result: {math.add(number1, number2)}')
+        elif operation_opted_by_user == 's':
+            print(f'Your result: {math.subtract(number1, number2)}')
+        elif operation_opted_by_user == 'm':
+            print(f'Your result: {math.multiply(number1, number2)}')
+        elif operation_opted_by_user == 'd':
+            if number2 == 0:
+                number2 = get_number('Second number cannot be 0 for division. Re-enter your second number: ')
+            print(f'Your result: {math.divide(number1, number2)}')
+        else:
+            print('⚠️ Please choose a valid operation (a, s, m, d, q)')
+    except ZeroDivisionError as e:
+        print(f'ERROR: {e}')
+
+
+   
